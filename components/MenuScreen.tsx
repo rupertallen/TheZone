@@ -1,8 +1,9 @@
 
 import React from 'react';
+import { GameType } from '../types';
 
 interface MenuScreenProps {
-  onStartGame: (game: 'wordMatch' | 'spellingBee') => void;
+  onStartGame: (game: GameType) => void;
 }
 
 export const MenuScreen: React.FC<MenuScreenProps> = ({ onStartGame }) => {

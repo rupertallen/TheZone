@@ -1,11 +1,9 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
 import { SpellingInput } from './SpellingInput';
-import { WORD_PAIRS } from '../data/words';
-import { GameStatus, WordPair } from '../types';
-
-const TOTAL_QUESTIONS = 20;
+import { GameStatus, WordList, WordPair } from '../types';
 
 // Fisher-Yates shuffle algorithm
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -18,12 +16,14 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface SpellingGameProps {
+  list: WordList;
   onGoHome: () => void;
+  onGoBack: () => void;
 }
 
 type AnswerStatus = 'default' | 'correct' | 'incorrect' | 'showing-answer';
 
-export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
+export const SpellingGame: React.FC<SpellingGameProps> = ({ list, onGoHome, onGoBack }) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing');
   const [roundWords, setRoundWords] = useState<WordPair[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -33,8 +33,10 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
   const [score, setScore] = useState(0);
   const [corrections, setCorrections] = useState(0);
 
+  const totalQuestions = list.words.length;
+
   const setupRound = useCallback(() => {
-    setRoundWords(shuffleArray(WORD_PAIRS).slice(0, TOTAL_QUESTIONS));
+    setRoundWords(shuffleArray(list.words));
     setCurrentIndex(0);
     setScore(0);
     setCorrections(0);
@@ -42,7 +44,7 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
     setAttempts(0);
     setAnswerStatus('default');
     setGameStatus('playing');
-  }, []);
+  }, [list]);
 
   useEffect(() => {
     setupRound();
@@ -66,8 +68,9 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
 
     if (isCorrect) {
       setAnswerStatus('correct');
-      setScore(prev => prev + 1);
-      if (attempts > 0) {
+      if (attempts === 0) {
+        setScore(prev => prev + 1);
+      } else {
         setCorrections(prev => prev + 1);
       }
     } else {
@@ -106,11 +109,17 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 font-sans text-slate-800">
       <div className="w-full max-w-2xl mx-auto">
         <header className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-             <h1 className="text-3xl md:text-4xl font-bold text-sky-700">Spelling Bee</h1>
+          <div className="flex justify-between items-center mb-2">
+             <div>
+                <h1 className="text-3xl md:text-4xl font-bold text-sky-700">Spelling Bee</h1>
+                <p className="text-slate-500 font-semibold">{list.name}</p>
+             </div>
              <button onClick={onGoHome} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors">Menu</button>
           </div>
-          {gameStatus === 'playing' && <ProgressBar current={currentIndex} total={TOTAL_QUESTIONS} />}
+          <button onClick={onGoBack} className="text-sm text-sky-600 hover:underline mb-4">
+            &larr; Change word list
+          </button>
+          {gameStatus === 'playing' && <ProgressBar current={currentIndex} total={totalQuestions} />}
         </header>
         <main className="bg-white rounded-2xl shadow-lg p-6 min-h-[480px] flex flex-col justify-between">
           {gameStatus === 'playing' ? (
@@ -137,7 +146,7 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
           ) : (
             <ScoreScreen 
               score={score} 
-              total={TOTAL_QUESTIONS} 
+              total={totalQuestions} 
               onRestart={setupRound} 
               onGoHome={onGoHome}
               secondaryStat={{ label: 'Corrections', value: corrections }}

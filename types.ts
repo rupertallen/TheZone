@@ -5,6 +5,14 @@ export interface WordPair {
   lang2: string; // French
 }
 
+export interface WordList {
+  id: string;
+  name: string;
+  description: string;
+  words: WordPair[];
+}
+
 export type GameStatus = 'playing' | 'finished';
 
-export type Screen = 'menu' | 'wordMatch' | 'spellingBee';
+export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee';
+export type GameType = 'wordMatch' | 'spellingBee';

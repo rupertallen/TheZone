@@ -1,13 +1,11 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
 import { GameBoard } from './GameBoard';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
-import { WORD_PAIRS } from '../data/words';
-import { GameStatus, WordPair } from '../types';
+import { GameStatus, WordList, WordPair } from '../types';
 
-const TOTAL_QUESTIONS = 20;
 const QUESTIONS_PER_PAGE = 5;
-const TOTAL_PAGES = TOTAL_QUESTIONS / QUESTIONS_PER_PAGE;
 
 // Fisher-Yates shuffle algorithm
 const shuffleArray = <T,>(array: T[]): T[] => {
@@ -20,22 +18,27 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface WordMatchGameProps {
+  list: WordList;
   onGoHome: () => void;
+  onGoBack: () => void;
 }
 
-export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
+export const WordMatchGame: React.FC<WordMatchGameProps> = ({ list, onGoHome, onGoBack }) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing');
   const [roundWords, setRoundWords] = useState<WordPair[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
+  
+  const totalQuestions = list.words.length;
+  const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE) || 1;
 
   const setupRound = useCallback(() => {
-    const shuffled = shuffleArray(WORD_PAIRS);
-    setRoundWords(shuffled.slice(0, TOTAL_QUESTIONS));
+    const shuffled = shuffleArray(list.words);
+    setRoundWords(shuffled);
     setCurrentPage(0);
     setScore(0);
     setGameStatus('playing');
-  }, []);
+  }, [list]);
 
   useEffect(() => {
     setupRound();
@@ -44,7 +47,7 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
   const handlePageComplete = (correctMatchesOnPage: number) => {
     setScore(prevScore => prevScore + correctMatchesOnPage);
 
-    if (currentPage < TOTAL_PAGES - 1) {
+    if (currentPage < totalPages - 1) {
       setCurrentPage(prevPage => prevPage + 1);
     } else {
       setGameStatus('finished');
@@ -73,10 +76,13 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 font-sans text-slate-800">
       <div className="w-full max-w-2xl mx-auto">
         <header className="mb-6">
-          <div className="flex justify-between items-center mb-4">
-             <h1 className="text-3xl md:text-4xl font-bold text-sky-700">
-                Word Match
-             </h1>
+          <div className="flex justify-between items-center mb-2">
+            <div>
+              <h1 className="text-3xl md:text-4xl font-bold text-sky-700">
+                  Word Match
+              </h1>
+              <p className="text-slate-500 font-semibold">{list.name}</p>
+            </div>
              <button 
                 onClick={onGoHome}
                 className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
@@ -85,8 +91,11 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
                 Menu
              </button>
           </div>
+           <button onClick={onGoBack} className="text-sm text-sky-600 hover:underline mb-4">
+             &larr; Change word list
+           </button>
           {gameStatus === 'playing' && (
-             <ProgressBar current={score} total={TOTAL_QUESTIONS} />
+             <ProgressBar current={score} total={totalQuestions} />
           )}
         </header>
         <main className="bg-white rounded-2xl shadow-lg p-6 min-h-[480px] flex flex-col justify-between">
@@ -100,7 +109,7 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
           {gameStatus === 'finished' && (
             <ScoreScreen 
               score={score} 
-              total={TOTAL_QUESTIONS} 
+              total={totalQuestions} 
               onRestart={handleRestart} 
               onGoHome={onGoHome}
             />
