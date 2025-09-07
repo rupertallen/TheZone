@@ -12,7 +12,14 @@ export interface WordList {
   words: WordPair[];
 }
 
+export interface SingleWordList {
+  id: string;
+  name: string;
+  description: string;
+  words: string[];
+}
+
 export type GameStatus = 'playing' | 'finished';
 
-export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee';
-export type GameType = 'wordMatch' | 'spellingBee';
+export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageListSelection' | 'singleLanguageSpelling';
+export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling';
