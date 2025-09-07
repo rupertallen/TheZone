@@ -12,7 +12,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({ onStartGame }) => {
       <div className="w-full max-w-2xl mx-auto text-center">
         <header className="mb-10">
           <h1 className="text-4xl md:text-5xl font-bold text-sky-700 mb-4">
-            Hedley's Learning Zone
+            Learning Zone
           </h1>
           <p className="text-lg text-slate-600">Choose a game to play!</p>
         </header>
@@ -57,7 +57,7 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({ onStartGame }) => {
             <button
               onClick={() => onStartGame('singleLanguageSpelling')}
               className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-sm text-left transform hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-300"
-              aria-label="Start Single Language Spelling game"
+              aria-label="Start Listen And Spell game"
             >
               <div className="flex items-center">
                 <div className="bg-indigo-100 text-indigo-600 p-4 rounded-xl mr-5">
@@ -66,8 +66,25 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({ onStartGame }) => {
                   </svg>
                 </div>
                 <div>
-                  <h2 className="text-2xl font-bold text-slate-800">Single Language Spelling</h2>
+                  <h2 className="text-2xl font-bold text-slate-800">Listen And Spell</h2>
                   <p className="text-slate-500">Listen to a word and spell it.</p>
+                </div>
+              </div>
+            </button>
+            <button
+              onClick={() => onStartGame('historyMatch')}
+              className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-sm text-left transform hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-rose-300"
+              aria-label="Start History Match game"
+            >
+              <div className="flex items-center">
+                <div className="bg-rose-100 text-rose-600 p-4 rounded-xl mr-5">
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.246 18 16.5 18c-1.746 0-3.332.477-4.5 1.253" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800">History Match</h2>
+                  <p className="text-slate-500">Match historical events to dates.</p>
                 </div>
               </div>
             </button>

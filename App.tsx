@@ -6,6 +6,7 @@ import { SingleLanguageListSelectionScreen } from './components/SingleLanguageLi
 import { WordMatchGame } from './components/WordMatchGame';
 import { SpellingGame } from './components/SpellingGame';
 import { SingleLanguageSpellingGame } from './components/SingleLanguageSpellingGame';
+import { HistoryMatchGame } from './components/HistoryMatchGame';
 import { Screen, GameType, WordList, SingleWordList } from './types';
 
 const App: React.FC = () => {
@@ -18,6 +19,8 @@ const App: React.FC = () => {
     setSelectedGame(game);
     if (game === 'singleLanguageSpelling') {
       setActiveScreen('singleLanguageListSelection');
+    } else if (game === 'historyMatch') {
+      setActiveScreen('historyMatch');
     } else {
       setActiveScreen('listSelection');
     }
@@ -75,6 +78,8 @@ const App: React.FC = () => {
           return <SingleLanguageSpellingGame list={selectedSingleList} onGoHome={handleGoHome} onGoBack={handleGoBackToSingleListSelection} />;
         }
         break;
+      case 'historyMatch':
+        return <HistoryMatchGame onGoHome={handleGoHome} />;
     }
     // Fallback to menu if state is inconsistent
     return <MenuScreen onStartGame={handleStartGame} />;

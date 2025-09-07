@@ -19,7 +19,20 @@ export interface SingleWordList {
   words: string[];
 }
 
+export interface HistoryEvent {
+  id: number;
+  date: string;
+  event: string;
+}
+
+export interface HistoryList {
+  id: string;
+  name: string;
+  description: string;
+  events: HistoryEvent[];
+}
+
 export type GameStatus = 'playing' | 'finished';
 
-export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageListSelection' | 'singleLanguageSpelling';
-export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling';
+export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageListSelection' | 'singleLanguageSpelling' | 'historyMatch';
+export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch';

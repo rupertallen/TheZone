@@ -126,7 +126,7 @@ export const SingleLanguageSpellingGame: React.FC<SingleLanguageSpellingGameProp
         <header className="mb-6">
           <div className="flex justify-between items-center mb-2">
              <div>
-                <h1 className="text-3xl md:text-4xl font-bold text-sky-700">Single Language Spelling</h1>
+                <h1 className="text-3xl md:text-4xl font-bold text-sky-700">Listen And Spell</h1>
                 <p className="text-slate-500 font-semibold">{list.name}</p>
              </div>
              <button onClick={onGoHome} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors">Menu</button>
