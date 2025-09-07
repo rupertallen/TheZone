@@ -1,11 +1,10 @@
-
 import React, { useState, useEffect, useMemo } from 'react';
 import { WordButton } from './WordButton';
 import { WordPair } from '../types';
 
 interface GameBoardProps {
   words: WordPair[];
-  onComplete: () => void;
+  onComplete: (correctMatches: number) => void;
 }
 
 // Fisher-Yates shuffle algorithm
@@ -21,32 +20,67 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 export const GameBoard: React.FC<GameBoardProps> = ({ words, onComplete }) => {
   const [selectedLang1, setSelectedLang1] = useState<WordPair | null>(null);
   const [selectedLang2, setSelectedLang2] = useState<WordPair | null>(null);
+  const [firstClicked, setFirstClicked] = useState<'lang1' | 'lang2' | null>(null);
   const [matchedPairs, setMatchedPairs] = useState<number[]>([]);
+  const [missedPairs, setMissedPairs] = useState<number[]>([]);
   const [isIncorrect, setIsIncorrect] = useState<boolean>(false);
-  
+
   const lang1Words = useMemo(() => shuffleArray(words), [words]);
   const lang2Words = useMemo(() => shuffleArray(words), [words]);
 
+  const handleSelectLang1 = (word: WordPair) => {
+    setSelectedLang1(word);
+    if (!selectedLang2) {
+      setFirstClicked('lang1');
+    }
+  };
+
+  const handleSelectLang2 = (word: WordPair) => {
+    setSelectedLang2(word);
+    if (!selectedLang1) {
+      setFirstClicked('lang2');
+    }
+  };
+
   useEffect(() => {
     if (selectedLang1 && selectedLang2) {
+      let timerId: number;
       if (selectedLang1.id === selectedLang2.id) {
         // Correct match
         setMatchedPairs(prev => [...prev, selectedLang1.id]);
         setSelectedLang1(null);
         setSelectedLang2(null);
+        setFirstClicked(null);
       } else {
         // Incorrect match
+        const missedId = firstClicked === 'lang1' ? selectedLang1.id : selectedLang2.id;
+        setMissedPairs(prev => [...prev, missedId]);
         setIsIncorrect(true);
-        setTimeout(() => {
+        
+        timerId = window.setTimeout(() => {
           setIsIncorrect(false);
           setSelectedLang1(null);
           setSelectedLang2(null);
+          setFirstClicked(null);
         }, 500);
       }
+      return () => clearTimeout(timerId);
     }
-  }, [selectedLang1, selectedLang2]);
-  
-  const allPairsMatched = matchedPairs.length === words.length;
+  }, [selectedLang1, selectedLang2, firstClicked]);
+
+  useEffect(() => {
+    if (words.length > 0 && matchedPairs.length + missedPairs.length === words.length) {
+      const timer = setTimeout(() => {
+        onComplete(matchedPairs.length);
+      }, 500); // Delay to show the final match/miss before continuing
+      return () => clearTimeout(timer);
+    }
+  }, [matchedPairs, missedPairs, words, onComplete]);
+
+  const isButtonDisabled = (wordPairId: number) => {
+    // Disable if a pair is being evaluated, or if the word is already matched/missed
+    return (!!selectedLang1 && !!selectedLang2) || matchedPairs.includes(wordPairId) || missedPairs.includes(wordPairId);
+  }
 
   return (
     <div className="flex flex-col flex-grow">
@@ -57,11 +91,12 @@ export const GameBoard: React.FC<GameBoardProps> = ({ words, onComplete }) => {
             <WordButton
               key={`lang1-${wordPair.id}`}
               word={wordPair.lang1}
-              onClick={() => !matchedPairs.includes(wordPair.id) && setSelectedLang1(wordPair)}
+              onClick={() => handleSelectLang1(wordPair)}
               isSelected={selectedLang1?.id === wordPair.id}
               isMatched={matchedPairs.includes(wordPair.id)}
-              isIncorrect={isIncorrect && selectedLang1?.id === wordPair.id}
-              isDisabled={matchedPairs.includes(wordPair.id)}
+              isMissed={missedPairs.includes(wordPair.id)}
+              isIncorrect={isIncorrect && (selectedLang1?.id === wordPair.id || selectedLang2?.id === wordPair.id)}
+              isDisabled={isButtonDisabled(wordPair.id)}
             />
           ))}
         </div>
@@ -71,26 +106,19 @@ export const GameBoard: React.FC<GameBoardProps> = ({ words, onComplete }) => {
             <WordButton
               key={`lang2-${wordPair.id}`}
               word={wordPair.lang2}
-              onClick={() => !matchedPairs.includes(wordPair.id) && setSelectedLang2(wordPair)}
+              onClick={() => handleSelectLang2(wordPair)}
               isSelected={selectedLang2?.id === wordPair.id}
               isMatched={matchedPairs.includes(wordPair.id)}
-              isIncorrect={isIncorrect && selectedLang2?.id === wordPair.id}
-              isDisabled={matchedPairs.includes(wordPair.id)}
+              isMissed={missedPairs.includes(wordPair.id)}
+              isIncorrect={isIncorrect && (selectedLang1?.id === wordPair.id || selectedLang2?.id === wordPair.id)}
+              isDisabled={isButtonDisabled(wordPair.id)}
             />
           ))}
         </div>
       </div>
 
-      <div className="mt-8 flex justify-center">
-        {allPairsMatched && (
-          <button
-            onClick={onComplete}
-            className="w-full max-w-xs px-8 py-4 bg-green-500 text-white font-bold text-xl rounded-xl shadow-lg hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transform hover:scale-105 transition-all duration-200"
-          >
-            Continue
-          </button>
-        )}
-      </div>
+      {/* Placeholder to maintain layout after removing the continue button */}
+      <div className="mt-8 h-14" />
     </div>
   );
 };

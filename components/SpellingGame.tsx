@@ -86,7 +86,11 @@ export const SpellingGame: React.FC<SpellingGameProps> = ({ onGoHome }) => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    if (showContinue) return;
+    // Prevent checking if the game is not in the default state.
+    // This stops multiple checks while feedback (e.g., shake animation) is active.
+    if (answerStatus !== 'default') {
+      return;
+    }
     if (inputValue.trim().length > 0) {
       handleCheckAnswer();
     }

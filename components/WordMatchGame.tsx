@@ -1,4 +1,3 @@
-
 import React, { useState, useEffect, useCallback } from 'react';
 import { GameBoard } from './GameBoard';
 import { ScoreScreen } from './ScoreScreen';
@@ -42,9 +41,8 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ onGoHome }) => {
     setupRound();
   }, [setupRound]);
 
-  const handlePageComplete = () => {
-    const newScore = score + QUESTIONS_PER_PAGE;
-    setScore(newScore);
+  const handlePageComplete = (correctMatchesOnPage: number) => {
+    setScore(prevScore => prevScore + correctMatchesOnPage);
 
     if (currentPage < TOTAL_PAGES - 1) {
       setCurrentPage(prevPage => prevPage + 1);
