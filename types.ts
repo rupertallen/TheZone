@@ -2,7 +2,7 @@
 export interface WordPair {
   id: number;
   lang1: string; // English
-  lang2: string; // French
+  lang2: string; // French or Latin
 }
 
 export interface WordList {
@@ -32,7 +32,22 @@ export interface HistoryList {
   events: HistoryEvent[];
 }
 
+export interface VerbEntry {
+  id: number;
+  person: string;
+  number: string;
+  latin: string;
+  english: string;
+}
+
+export interface VerbList {
+  id: string;
+  name: string;
+  description: string;
+  verbs: VerbEntry[];
+}
+
 export type GameStatus = 'playing' | 'finished';
 
-export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageListSelection' | 'singleLanguageSpelling' | 'historyMatch';
-export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch';
+export type Screen = 'menu' | 'listSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageListSelection' | 'singleLanguageSpelling' | 'historyMatch' | 'verbGame';
+export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch' | 'verbGame';

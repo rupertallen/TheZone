@@ -55,6 +55,24 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({ onStartGame }) => {
             </button>
 
             <button
+              onClick={() => onStartGame('verbGame')}
+              className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-sm text-left transform hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-purple-300"
+              aria-label="Start Verb Challenge game"
+            >
+              <div className="flex items-center">
+                <div className="bg-purple-100 text-purple-600 p-4 rounded-xl mr-5">
+                   <svg xmlns="http://www.w3.org/2000/svg" className="h-10 w-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                    <path strokeLinecap="round" strokeLinejoin="round" d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
+                </div>
+                <div>
+                  <h2 className="text-2xl font-bold text-slate-800">Verb Challenge</h2>
+                  <p className="text-slate-500">Learn your Latin verb conjugations.</p>
+                </div>
+              </div>
+            </button>
+
+            <button
               onClick={() => onStartGame('singleLanguageSpelling')}
               className="bg-white rounded-2xl shadow-lg p-6 w-full max-w-sm text-left transform hover:scale-105 transition-transform duration-200 focus:outline-none focus:ring-4 focus:ring-indigo-300"
               aria-label="Start Listen And Spell game"

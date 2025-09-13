@@ -1,9 +1,10 @@
+
 import { WordList } from '../types';
 
 export const WORD_LISTS: WordList[] = [
   {
     id: 'numbers-week2',
-    name: 'Week 2 - Numbers (1-20)',
+    name: 'French: Week 2 - Numbers (1-20)',
     description: 'Learn the French words for numbers one through twenty.',
     words: [
       { id: 1, lang1: 'one', lang2: 'un' },
@@ -30,7 +31,7 @@ export const WORD_LISTS: WordList[] = [
   },
   {
     id: 'introductions-week3',
-    name: 'Week 3 - Introductions',
+    name: 'French: Week 3 - Introductions',
     description: 'Learn to introduce yourself in French.',
     words: [
       { id: 21, lang1: 'What is your name?', lang2: "Comment t'appelles-tu?" },
@@ -47,7 +48,7 @@ export const WORD_LISTS: WordList[] = [
   },
    {
     id: 'location-week4',
-    name: 'Week 4 - Where do you live?',
+    name: 'French: Week 4 - Where do you live?',
     description: 'Learn to talk about where you live.',
     words: [
       { id: 31, lang1: 'Where do you live?', lang2: 'Tu habites où?' },
@@ -64,7 +65,7 @@ export const WORD_LISTS: WordList[] = [
   },
   {
     id: 'colours-week5',
-    name: 'Week 5 - Colours',
+    name: 'French: Week 5 - Colours',
     description: 'Learn French words for colours and related phrases.',
     words: [
       { id: 41, lang1: 'What colour is it?', lang2: "C'est de quelle couleur?" },
@@ -81,7 +82,7 @@ export const WORD_LISTS: WordList[] = [
   },
     {
     id: 'descriptions-week6',
-    name: 'Week 6 - Descriptions',
+    name: 'French: Week 6 - Descriptions',
     description: 'Learn adjectives to describe people.',
     words: [
       { id: 51, lang1: 'What are you like?', lang2: 'Tu es comment?' },
@@ -98,7 +99,7 @@ export const WORD_LISTS: WordList[] = [
   },
   {
     id: 'hair-eyes-week7',
-    name: 'Week 7 - Hair and eyes',
+    name: 'French: Week 7 - Hair and eyes',
     description: 'Learn to describe hair and eye colour.',
     words: [
       { id: 61, lang1: 'I have', lang2: "J'ai" },
@@ -111,6 +112,57 @@ export const WORD_LISTS: WordList[] = [
       { id: 68, lang1: 'Black', lang2: 'Noirs' },
       { id: 69, lang1: 'Blond', lang2: 'Blonds' },
       { id: 70, lang1: 'Red (hair)', lang2: 'Roux' },
+    ],
+  },
+  {
+    id: 'latin-week3',
+    name: 'Latin: Week 3 - Verbs',
+    description: 'First conjugation verbs.',
+    words: [
+      { id: 71, lang1: 'I love', lang2: 'amo' },
+      { id: 72, lang1: 'I walk', lang2: 'ambulo' },
+      { id: 73, lang1: 'I sing', lang2: 'canto' },
+      { id: 74, lang1: 'I shout', lang2: 'clamo' },
+      { id: 75, lang1: 'I hurry', lang2: 'festino' },
+      { id: 76, lang1: 'I live', lang2: 'habito' },
+      { id: 77, lang1: 'I enter', lang2: 'intro' },
+      { id: 78, lang1: 'I work', lang2: 'laboro' },
+      { id: 79, lang1: 'I watch', lang2: 'specto' },
+      { id: 80, lang1: 'I fight', lang2: 'pugno' },
+    ],
+  },
+  {
+    id: 'latin-week4',
+    name: 'Latin: Week 4 - Nouns',
+    description: 'Mostly feminine nouns.',
+    words: [
+      { id: 81, lang1: 'farmer', lang2: 'agricola' },
+      { id: 82, lang1: 'mistress', lang2: 'domina' },
+      { id: 83, lang1: 'woman', lang2: 'femina' },
+      { id: 84, lang1: 'daughter', lang2: 'filia' },
+      { id: 85, lang1: 'sailor', lang2: 'nauta' },
+      { id: 86, lang1: 'girl', lang2: 'puella' },
+      { id: 87, lang1: 'queen', lang2: 'regina' },
+      { id: 88, lang1: 'slave girl', lang2: 'ancilla' },
+      { id: 89, lang1: 'goddess', lang2: 'dea' },
+      { id: 90, lang1: 'inhabitant', lang2: 'incola' },
+    ],
+  },
+  {
+    id: 'latin-week5',
+    name: 'Latin: Week 5 - Mixed Vocab',
+    description: 'Verbs and nouns.',
+    words: [
+      { id: 91, lang1: 'I sail', lang2: 'navigo' },
+      { id: 92, lang1: 'I praise', lang2: 'laudo' },
+      { id: 93, lang1: 'I kill', lang2: 'neco' },
+      { id: 94, lang1: 'I prepare', lang2: 'paro' },
+      { id: 95, lang1: 'I build', lang2: 'aedifico' },
+      { id: 96, lang1: 'I call', lang2: 'voco' },
+      { id: 97, lang1: 'dinner', lang2: 'cena' },
+      { id: 98, lang1: 'water', lang2: 'aqua' },
+      { id: 99, lang1: 'wood', lang2: 'silva' },
+      { id: 100, lang1: 'spear', lang2: 'hasta' },
     ],
   },
 ];
