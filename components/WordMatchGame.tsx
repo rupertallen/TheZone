@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GameBoard } from './GameBoard';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
-import { GameStatus, WordList, WordPair } from '../types';
+import { GameStatus, WordPair } from '../types';
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -18,7 +18,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface WordMatchGameProps {
-  list: WordList;
+  list: any; // Accept any supported list type
   onGoHome: () => void;
   onGoBack: () => void;
 }
@@ -29,16 +29,45 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ list, onGoHome, on
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   
-  const totalQuestions = list.words.length;
+  const processList = useCallback((): WordPair[] => {
+    if (list.words) {
+      return list.words;
+    } else if (list.definitions) {
+      return list.definitions.map((d: any) => ({
+        id: d.id,
+        lang1: d.term,
+        lang2: d.meaning,
+      }));
+    } else if (list.cases) {
+      const pairs: WordPair[] = [];
+      list.cases.forEach((c: any) => {
+        pairs.push({
+          id: c.id * 10,
+          lang1: `${c.caseName} Singular`,
+          lang2: c.latinSingular,
+        });
+        pairs.push({
+          id: c.id * 10 + 1,
+          lang1: `${c.caseName} Plural`,
+          lang2: c.latinPlural,
+        });
+      });
+      return pairs;
+    }
+    return [];
+  }, [list]);
+
+  const totalQuestions = processList().length;
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE) || 1;
 
   const setupRound = useCallback(() => {
-    const shuffled = shuffleArray(list.words);
+    const allPairs = processList();
+    const shuffled = shuffleArray(allPairs);
     setRoundWords(shuffled);
     setCurrentPage(0);
     setScore(0);
     setGameStatus('playing');
-  }, [list]);
+  }, [processList]);
 
   useEffect(() => {
     setupRound();
@@ -64,7 +93,7 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ list, onGoHome, on
     return roundWords.slice(startIndex, endIndex);
   };
   
-  if (roundWords.length === 0) {
+  if (roundWords.length === 0 && gameStatus === 'playing') {
     return (
       <div className="flex items-center justify-center h-screen bg-slate-100 text-slate-700">
         Loading...

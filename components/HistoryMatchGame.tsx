@@ -3,13 +3,11 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GameBoard } from './GameBoard';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
-import { GameStatus, WordPair } from '../types';
-import { HISTORY_LISTS } from '../data/history-events';
+import { GameStatus, WordPair, HistoryList, HistoryEvent } from '../types';
 
 const QUESTIONS_PER_PAGE = 5;
 const TOTAL_QUESTIONS_IN_QUIZ = 20;
 
-// Fisher-Yates shuffle algorithm
 const shuffleArray = <T,>(array: T[]): T[] => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -20,22 +18,23 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface HistoryMatchGameProps {
+  list: HistoryList;
   onGoHome: () => void;
+  onGoBack: () => void;
 }
 
-const historyList = HISTORY_LISTS[0];
-
-export const HistoryMatchGame: React.FC<HistoryMatchGameProps> = ({ onGoHome }) => {
+export const HistoryMatchGame: React.FC<HistoryMatchGameProps> = ({ list, onGoHome, onGoBack }) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing');
   const [roundEvents, setRoundEvents] = useState<WordPair[]>([]);
   const [currentPage, setCurrentPage] = useState<number>(0);
   const [score, setScore] = useState<number>(0);
   
-  const totalQuestions = TOTAL_QUESTIONS_IN_QUIZ;
+  const totalQuestions = Math.min(TOTAL_QUESTIONS_IN_QUIZ, list.events.length);
   const totalPages = Math.ceil(totalQuestions / QUESTIONS_PER_PAGE) || 1;
 
   const setupRound = useCallback(() => {
-    const shuffled = shuffleArray(historyList.events);
+    const events = list.events as HistoryEvent[];
+    const shuffled = shuffleArray(events);
     const selectedEvents = shuffled.slice(0, TOTAL_QUESTIONS_IN_QUIZ);
     const mappedToWordPairs = selectedEvents.map(event => ({
         id: event.id,
@@ -46,7 +45,7 @@ export const HistoryMatchGame: React.FC<HistoryMatchGameProps> = ({ onGoHome }) 
     setCurrentPage(0);
     setScore(0);
     setGameStatus('playing');
-  }, []);
+  }, [list]);
 
   useEffect(() => {
     setupRound();
@@ -89,15 +88,12 @@ export const HistoryMatchGame: React.FC<HistoryMatchGameProps> = ({ onGoHome }) 
               <h1 className="text-3xl md:text-4xl font-bold text-sky-700">
                   History Match
               </h1>
-              <p className="text-slate-500 font-semibold">{historyList.name}</p>
+              <p className="text-slate-500 font-semibold">{list.name}</p>
             </div>
-             <button 
-                onClick={onGoHome}
-                className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors"
-                aria-label="Go to main menu"
-             >
-                Menu
-             </button>
+            <div className="flex gap-2">
+                <button onClick={onGoBack} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300">Back</button>
+                <button onClick={onGoHome} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300">Menu</button>
+             </div>
           </div>
           {gameStatus === 'playing' && (
              <ProgressBar current={score} total={totalQuestions} />

@@ -3,10 +3,8 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
 import { SpellingInput } from './SpellingInput';
-import { GameStatus, VerbEntry } from '../types';
-import { VERB_LISTS } from '../data/verbs';
+import { GameStatus, VerbEntry, VerbList } from '../types';
 
-// Fisher-Yates shuffle algorithm
 const shuffleArray = <T,>(array: T[]): T[] => {
   const newArray = [...array];
   for (let i = newArray.length - 1; i > 0; i--) {
@@ -17,14 +15,14 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface VerbGameProps {
+  list: VerbList;
   onGoHome: () => void;
+  onGoBack: () => void;
 }
 
 type AnswerStatus = 'default' | 'correct' | 'incorrect' | 'showing-answer';
 
-const list = VERB_LISTS[0];
-
-export const VerbGame: React.FC<VerbGameProps> = ({ onGoHome }) => {
+export const VerbGame: React.FC<VerbGameProps> = ({ list, onGoHome, onGoBack }) => {
   const [gameStatus, setGameStatus] = useState<GameStatus>('playing');
   const [roundVerbs, setRoundVerbs] = useState<VerbEntry[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -45,7 +43,7 @@ export const VerbGame: React.FC<VerbGameProps> = ({ onGoHome }) => {
     setAttempts(0);
     setAnswerStatus('default');
     setGameStatus('playing');
-  }, []);
+  }, [list]);
 
   useEffect(() => {
     setupRound();
@@ -111,7 +109,10 @@ export const VerbGame: React.FC<VerbGameProps> = ({ onGoHome }) => {
                 <h1 className="text-3xl md:text-4xl font-bold text-sky-700">Verb Challenge</h1>
                 <p className="text-slate-500 font-semibold">{list.name}</p>
              </div>
-             <button onClick={onGoHome} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300 focus:outline-none focus:ring-2 focus:ring-slate-400 transition-colors">Menu</button>
+             <div className="flex gap-2">
+                <button onClick={onGoBack} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300">Back</button>
+                <button onClick={onGoHome} className="px-4 py-2 bg-slate-200 text-slate-700 font-semibold rounded-lg shadow hover:bg-slate-300">Menu</button>
+             </div>
           </div>
           {gameStatus === 'playing' && <ProgressBar current={currentIndex} total={totalQuestions} />}
         </header>
@@ -136,9 +137,9 @@ export const VerbGame: React.FC<VerbGameProps> = ({ onGoHome }) => {
               </div>
               <div className="flex justify-center mt-6">
                  {showContinue ? (
-                    <button type="button" onClick={handleNextWord} className="w-full max-w-xs px-8 py-4 bg-green-500 text-white font-bold text-xl rounded-xl shadow-lg hover:bg-green-600 focus:outline-none focus:ring-4 focus:ring-green-300 transform hover:scale-105 transition-all">Continue</button>
+                    <button type="button" onClick={handleNextWord} className="w-full max-w-xs px-8 py-4 bg-green-500 text-white font-bold text-xl rounded-xl shadow-lg hover:bg-green-600 transition-all">Continue</button>
                  ) : (
-                    <button type="submit" disabled={!inputValue} className="w-full max-w-xs px-8 py-4 bg-sky-500 text-white font-bold text-xl rounded-xl shadow-lg hover:bg-sky-600 focus:outline-none focus:ring-4 focus:ring-sky-300 disabled:bg-slate-300 disabled:cursor-not-allowed transform hover:scale-105 transition-all">Check</button>
+                    <button type="submit" disabled={!inputValue} className="w-full max-w-xs px-8 py-4 bg-sky-500 text-white font-bold text-xl rounded-xl shadow-lg hover:bg-sky-600 transition-all disabled:opacity-50">Check</button>
                  )}
               </div>
             </form>
