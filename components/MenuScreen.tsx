@@ -14,6 +14,7 @@ interface MenuScreenProps {
   term: AcademicTerm;
   onYearChange: (year: AcademicYear) => void;
   onTermChange: (term: AcademicTerm) => void;
+  onGoBack: () => void;
 }
 
 export const MenuScreen: React.FC<MenuScreenProps> = ({ 
@@ -21,7 +22,8 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   year, 
   term, 
   onYearChange, 
-  onTermChange 
+  onTermChange,
+  onGoBack
 }) => {
   const years: AcademicYear[] = ['Year 5', 'Year 6', 'Year 7', 'Year 8'];
   const terms: AcademicTerm[] = ['Autumn', 'Spring', 'Summer'];
@@ -109,9 +111,19 @@ export const MenuScreen: React.FC<MenuScreenProps> = ({
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 font-sans text-slate-800 bg-slate-100">
       <div className="w-full max-w-4xl mx-auto text-center flex flex-col items-center">
-        <header className="mb-8 w-full">
-          <h1 className="text-4xl md:text-5xl font-bold text-sky-700 mb-2">
-            Learning Zone
+        <header className="mb-8 w-full relative">
+          <button 
+            onClick={onGoBack} 
+            className="absolute left-0 top-0 text-sky-600 font-bold flex items-center gap-1 hover:underline"
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M9.707 16.707a1 1 0 01-1.414 0l-6-6a1 1 0 010-1.414l6-6a1 1 0 011.414 1.414L5.414 9H17a1 1 0 110 2H5.414l4.293 4.293a1 1 0 010 1.414z" clipRule="evenodd" />
+            </svg>
+            Back
+          </button>
+          
+          <h1 className="text-4xl md:text-5xl font-bold text-sky-700 mb-2 mt-8 md:mt-0">
+            Learning
           </h1>
           <p className="text-lg text-slate-600 mb-6">Choose your year and term to see your specific activities.</p>
           

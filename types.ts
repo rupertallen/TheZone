@@ -1,5 +1,17 @@
 
-export type Screen = 'menu' | 'listSelection' | 'singleLanguageListSelection' | 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch' | 'verbGame' | 'reels';
+export type Screen = 
+  | 'main-landing' 
+  | 'menu' 
+  | 'listSelection' 
+  | 'singleLanguageListSelection' 
+  | 'wordMatch' 
+  | 'spellingBee' 
+  | 'singleLanguageSpelling' 
+  | 'historyMatch' 
+  | 'verbGame' 
+  | 'reels'
+  | 'poetry'
+  | 'chess';
 
 export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch' | 'verbGame' | 'reels';
 
@@ -94,6 +106,13 @@ export interface HistoryList {
   events: HistoryEvent[];
   year: AcademicYear;
   term: AcademicTerm;
+}
+
+export interface Poem {
+  id: string;
+  title: string;
+  author: string;
+  lines: string[];
 }
 
 // Union type for any kind of list that can be used in general selection

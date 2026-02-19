@@ -1,5 +1,6 @@
 
 import React, { useState, useEffect } from 'react';
+import { TheZoneLanding } from './components/TheZoneLanding';
 import { MenuScreen } from './components/MenuScreen';
 import { ListSelectionScreen } from './components/ListSelectionScreen';
 import { SingleLanguageListSelectionScreen } from './components/SingleLanguageListSelectionScreen';
@@ -9,10 +10,12 @@ import { SingleLanguageSpellingGame } from './components/SingleLanguageSpellingG
 import { HistoryMatchGame } from './components/HistoryMatchGame';
 import { VerbGame } from './components/VerbGame';
 import { ReelsViewer } from './components/ReelsViewer';
+import { PoetryScreen } from './components/PoetryScreen';
+import { ChessScreen } from './components/ChessScreen';
 import { Screen, GameType, WordList, SingleWordList, VerbList, HistoryList, AcademicYear, AcademicTerm } from './types';
 
 const App: React.FC = () => {
-  const [activeScreen, setActiveScreen] = useState<Screen>('menu');
+  const [activeScreen, setActiveScreen] = useState<Screen>('main-landing');
   const [selectedGame, setSelectedGame] = useState<GameType | null>(null);
   
   // Game-specific selections
@@ -77,8 +80,12 @@ const App: React.FC = () => {
   };
 
   const handleGoHome = () => {
-    setActiveScreen('menu');
+    setActiveScreen('main-landing');
     setSelectedGame(null);
+  };
+
+  const handleGoToLearningMenu = () => {
+    setActiveScreen('menu');
   };
   
   const handleGoBackToSelection = () => {
@@ -91,6 +98,12 @@ const App: React.FC = () => {
 
   const renderScreen = () => {
     switch(activeScreen) {
+      case 'main-landing':
+        return <TheZoneLanding onNavigate={(screen) => setActiveScreen(screen)} />;
+      case 'poetry':
+        return <PoetryScreen onGoBack={handleGoHome} />;
+      case 'chess':
+        return <ChessScreen onGoBack={handleGoHome} />;
       case 'menu':
         return (
           <MenuScreen 
@@ -99,13 +112,14 @@ const App: React.FC = () => {
             term={currentTerm} 
             onYearChange={setCurrentYear} 
             onTermChange={setCurrentTerm} 
+            onGoBack={handleGoHome}
           />
         );
       case 'listSelection':
         return (
           <ListSelectionScreen 
             onSelectList={handleSelectList} 
-            onGoBack={handleGoHome} 
+            onGoBack={handleGoToLearningMenu} 
             year={currentYear} 
             term={currentTerm}
             gameType={selectedGame}
@@ -115,7 +129,7 @@ const App: React.FC = () => {
         return (
           <SingleLanguageListSelectionScreen 
             onSelectList={handleSelectSingleLanguageList} 
-            onGoBack={handleGoHome} 
+            onGoBack={handleGoToLearningMenu} 
             year={currentYear} 
             term={currentTerm} 
           />
@@ -148,7 +162,7 @@ const App: React.FC = () => {
       case 'reels':
         return <ReelsViewer year={currentYear} term={currentTerm} onGoHome={handleGoHome} />;
     }
-    return <MenuScreen onStartGame={handleStartGame} year={currentYear} term={currentTerm} onYearChange={setCurrentYear} onTermChange={setCurrentTerm} />;
+    return <TheZoneLanding onNavigate={(screen) => setActiveScreen(screen)} />;
   }
   
   return <>{renderScreen()}</>;

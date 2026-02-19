@@ -136,16 +136,17 @@ export const ReelsViewer: React.FC<ReelsViewerProps> = ({ year, term, onGoHome }
   return (
     <div className="fixed inset-0 bg-black overflow-y-auto snap-y snap-mandatory scrollbar-hide">
       {/* Overlay Navigation */}
-      <div className="fixed top-4 left-4 right-4 z-50 flex justify-between items-center pointer-events-none">
-        <div className="bg-white/20 backdrop-blur-md px-4 py-2 rounded-full border border-white/30 text-white font-bold pointer-events-auto">
-          {year} Reels - {term}
+      <div className="fixed top-0 left-0 right-0 z-50 flex justify-between items-center p-4 pointer-events-none">
+        <div className="bg-white/20 backdrop-blur-lg px-4 py-2 rounded-full border border-white/30 text-white text-xs sm:text-sm font-bold pointer-events-auto shadow-xl">
+          {year} Reels • {term}
         </div>
         <button 
           onClick={onGoHome}
-          className="bg-white/20 backdrop-blur-md p-3 rounded-full border border-white/30 text-white pointer-events-auto hover:bg-white/40 transition-all"
+          className="bg-white/20 backdrop-blur-lg p-2.5 rounded-full border border-white/30 text-white pointer-events-auto hover:bg-white/40 transition-all shadow-xl active:scale-90"
+          aria-label="Close Reels"
         >
-          <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 sm:h-6 sm:w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
       </div>
@@ -154,39 +155,45 @@ export const ReelsViewer: React.FC<ReelsViewerProps> = ({ year, term, onGoHome }
         reelItems.map((item) => (
           <section 
             key={item.id} 
-            className={`h-screen w-full snap-start flex flex-col items-center justify-center p-8 text-white relative overflow-hidden bg-gradient-to-br ${item.accent}`}
+            className={`h-screen w-full snap-start flex flex-col items-center justify-center p-6 sm:p-10 text-white relative overflow-hidden bg-gradient-to-br ${item.accent}`}
           >
             {/* Background Icon Watermark */}
-            <div className="absolute -bottom-10 -right-10 opacity-10">
-               <svg xmlns="http://www.w3.org/2000/svg" className="h-96 w-96" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="absolute -bottom-16 -right-16 opacity-10 pointer-events-none select-none">
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-64 w-64 sm:h-96 sm:w-96" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1} d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" />
                </svg>
             </div>
 
-            <div className="max-w-xl text-center z-10 space-y-8 animate-in fade-in zoom-in duration-500">
-               <span className="inline-block px-4 py-1 bg-white/20 backdrop-blur-md rounded-full text-sm font-bold tracking-widest uppercase border border-white/20">
-                 Did you know?
+            <div className="w-full max-w-lg text-center z-10 space-y-6 sm:space-y-10 animate-in fade-in zoom-in duration-500">
+               <span className="inline-block px-3 py-1 bg-white/10 backdrop-blur-md rounded-full text-[10px] sm:text-xs font-black tracking-[0.2em] uppercase border border-white/20">
+                 Quick Fact
                </span>
-               <h2 className="text-3xl md:text-4xl font-light leading-relaxed">
-                 {item.content}
-               </h2>
-               <div className="text-5xl md:text-7xl font-black drop-shadow-2xl tracking-tight break-words">
-                 {item.subContent}
+               
+               <div className="space-y-4">
+                 <h2 className="text-2xl sm:text-3xl md:text-4xl font-light leading-snug sm:leading-relaxed opacity-90">
+                   {item.content}
+                 </h2>
+                 <div className="text-4xl sm:text-6xl md:text-7xl font-black drop-shadow-2xl tracking-tight leading-tight break-words" style={{ overflowWrap: 'anywhere' }}>
+                   {item.subContent}
+                 </div>
                </div>
             </div>
 
             {/* Hint to scroll */}
-            <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce opacity-50">
-               <span className="text-xs font-bold uppercase tracking-widest mb-2">Swipe up</span>
-               <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <div className="absolute bottom-10 left-1/2 -translate-x-1/2 flex flex-col items-center animate-bounce opacity-40 pointer-events-none">
+               <span className="text-[10px] font-black uppercase tracking-[0.3em] mb-2">Swipe</span>
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={3} d="M19 14l-7 7-7-7" />
                </svg>
             </div>
           </section>
         ))
       ) : (
-        <div className="h-screen w-full flex items-center justify-center bg-slate-900 text-white">
-          <p>No reels found for this term.</p>
+        <div className="h-screen w-full flex items-center justify-center bg-slate-900 text-white p-8 text-center">
+          <div className="space-y-4">
+            <p className="text-xl font-bold opacity-50">No reels found for this term yet.</p>
+            <button onClick={onGoHome} className="text-sky-400 font-bold underline">Go back to Menu</button>
+          </div>
         </div>
       )}
     </div>
