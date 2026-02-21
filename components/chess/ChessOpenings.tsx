@@ -1,5 +1,7 @@
+
 import React, { useState, useEffect, useCallback } from 'react';
-import { Opening, OPENINGS, INITIAL_BOARD, PIECE_ICONS, MiniBoard } from './ChessTypes';
+import { Opening, INITIAL_BOARD, PIECE_ICONS, MiniBoard } from './ChessTypes';
+import { OPENINGS } from '../../data/chessOpenings';
 
 interface ChessOpeningsProps {
   onBack: () => void;
@@ -22,11 +24,13 @@ export const ChessOpenings: React.FC<ChessOpeningsProps> = ({ onBack }) => {
   const getOpeningBoardState = (op: Opening, step: number) => {
     const b = JSON.parse(JSON.stringify(INITIAL_BOARD));
     for (let i = 0; i < step; i++) {
-      const [fr, fc, tr, tc] = op.boardMoves[i];
-      if (b[fr][fc]) {
-        b[tr][tc] = b[fr][fc];
-        b[fr][fc] = null;
-      }
+      const turn = op.boardMoves[i];
+      turn.forEach(([fr, fc, tr, tc]) => {
+        if (b[fr][fc]) {
+          b[tr][tc] = b[fr][fc];
+          b[fr][fc] = null;
+        }
+      });
     }
     return b;
   };
@@ -48,7 +52,16 @@ export const ChessOpenings: React.FC<ChessOpeningsProps> = ({ onBack }) => {
 
   if (activeOpening) {
     const currentBoard = getOpeningBoardState(activeOpening, openingStep);
-    const lastMove = openingStep > 0 ? activeOpening.notations[openingStep - 1] : "Starting position";
+    const lastMoveNotation = openingStep > 0 ? activeOpening.notations[openingStep - 1] : "Starting position";
+    const lastMoveAtomic = openingStep > 0 ? activeOpening.boardMoves[openingStep - 1] : [];
+
+    const isLastMoveTarget = (r: number, c: number) => {
+      return lastMoveAtomic.some(m => m[2] === r && m[3] === c);
+    };
+
+    const isLastMoveSource = (r: number, c: number) => {
+      return lastMoveAtomic.some(m => m[0] === r && m[1] === c);
+    };
 
     return (
       <div className="min-h-screen bg-slate-900 flex flex-col items-center justify-start p-4 sm:p-8 font-sans text-white overflow-y-auto">
@@ -79,10 +92,10 @@ export const ChessOpenings: React.FC<ChessOpeningsProps> = ({ onBack }) => {
             <div className="grid grid-cols-8 grid-rows-8 border-8 border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden w-[300px] h-[300px] sm:w-[450px] sm:h-[450px]">
               {currentBoard.map((row, rIdx) => row.map((piece, cIdx) => {
                 const isDark = (rIdx + cIdx) % 2 === 1;
-                const isLastMoveFrom = openingStep > 0 && activeOpening.boardMoves[openingStep - 1][0] === rIdx && activeOpening.boardMoves[openingStep - 1][1] === cIdx;
-                const isLastMoveTo = openingStep > 0 && activeOpening.boardMoves[openingStep - 1][2] === rIdx && activeOpening.boardMoves[openingStep - 1][3] === cIdx;
+                const highlightTarget = isLastMoveTarget(rIdx, cIdx);
+                const highlightSource = isLastMoveSource(rIdx, cIdx);
                 return (
-                  <div key={`${rIdx}-${cIdx}`} className={`relative flex items-center justify-center text-3xl sm:text-5xl select-none ${isDark ? 'bg-indigo-800' : 'bg-indigo-100'} ${isLastMoveTo ? 'bg-yellow-200/40' : ''} ${isLastMoveFrom ? 'bg-yellow-400/20' : ''}`}>
+                  <div key={`${rIdx}-${cIdx}`} className={`relative flex items-center justify-center text-3xl sm:text-5xl select-none ${isDark ? 'bg-indigo-800' : 'bg-indigo-100'} ${highlightTarget ? 'bg-yellow-200/60 ring-inset ring-2 ring-yellow-400' : ''} ${highlightSource ? 'bg-yellow-400/20' : ''}`}>
                     {piece && <span className={piece.color === 'w' ? 'text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)]' : 'text-slate-900'}>{PIECE_ICONS[`${piece.color}-${piece.type}`]}</span>}
                   </div>
                 );
@@ -104,7 +117,7 @@ export const ChessOpenings: React.FC<ChessOpeningsProps> = ({ onBack }) => {
             <div className="bg-white/5 border border-white/10 p-8 rounded-[32px] shadow-xl backdrop-blur-sm">
               <h3 className="text-sm font-black text-indigo-400 uppercase tracking-[0.2em] mb-4">Current Move</h3>
               <div className="flex items-center gap-6">
-                <div className="text-5xl font-black tracking-tighter text-white">{openingStep === 0 ? "..." : lastMove}</div>
+                <div className="text-5xl font-black tracking-tighter text-white">{openingStep === 0 ? "..." : lastMoveNotation}</div>
                 <div className="h-10 w-px bg-white/10" />
                 <p className="text-slate-400 leading-tight italic max-w-[140px]">{openingStep === 0 ? "Game start." : `Move ${openingStep}`}</p>
               </div>

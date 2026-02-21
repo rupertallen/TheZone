@@ -3,13 +3,14 @@ import { ChessSandbox } from './chess/ChessSandbox';
 import { ChessOpenings } from './chess/ChessOpenings';
 import { ChessNotation } from './chess/ChessNotation';
 import { ChessTimer } from './chess/ChessTimer';
+import { FamousMatches } from './chess/FamousMatches';
 
 interface ChessScreenProps {
   onGoBack: () => void;
 }
 
 export const ChessScreen: React.FC<ChessScreenProps> = ({ onGoBack }) => {
-  const [mode, setMode] = useState<'menu' | 'play' | 'openings' | 'notation' | 'timer'>('menu');
+  const [mode, setMode] = useState<'menu' | 'play' | 'openings' | 'notation' | 'timer' | 'matches'>('menu');
 
   if (mode === 'play') {
     return <ChessSandbox onBack={() => setMode('menu')} />;
@@ -25,6 +26,10 @@ export const ChessScreen: React.FC<ChessScreenProps> = ({ onGoBack }) => {
 
   if (mode === 'timer') {
     return <ChessTimer onBack={() => setMode('menu')} />;
+  }
+
+  if (mode === 'matches') {
+    return <FamousMatches onBack={() => setMode('menu')} />;
   }
 
   return (
@@ -48,7 +53,7 @@ export const ChessScreen: React.FC<ChessScreenProps> = ({ onGoBack }) => {
           <p className="text-indigo-200 text-xl font-medium">Strategy, puzzles, and tactics.</p>
         </header>
 
-        <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 w-full max-w-4xl mx-auto">
+        <main className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 w-full max-w-4xl mx-auto">
           <button 
             onClick={() => setMode('play')}
             className="group bg-white rounded-3xl p-6 text-left hover:-translate-y-1 transition-all shadow-xl flex flex-col items-center gap-4 border-b-4 border-slate-200"
@@ -91,6 +96,21 @@ export const ChessScreen: React.FC<ChessScreenProps> = ({ onGoBack }) => {
             <div className="text-center">
               <h2 className="text-lg font-bold text-slate-800">Notation</h2>
               <p className="text-slate-500 text-xs italic">Learn squares.</p>
+            </div>
+          </button>
+
+          <button 
+            onClick={() => setMode('matches')}
+            className="group bg-white rounded-3xl p-6 text-left hover:-translate-y-1 transition-all shadow-xl flex flex-col items-center gap-4 border-b-4 border-slate-200"
+          >
+            <div className="bg-sky-100 p-3 rounded-2xl group-hover:bg-sky-600 group-hover:text-white transition-colors">
+               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8 text-sky-600 group-hover:text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M11 5.882V19.24a1.76 1.76 0 01-3.417.592l-2.147-6.15M18 13a3 3 0 100-6M5.436 13.683A4.001 4.001 0 017 6h1.832c4.1 0 7.625-1.234 9.168-3v14c-1.543-1.766-5.067-3-9.168-3H7a3.988 3.988 0 01-1.564-.317z" />
+              </svg>
+            </div>
+            <div className="text-center">
+              <h2 className="text-lg font-bold text-slate-800">Famous Matches</h2>
+              <p className="text-slate-500 text-xs italic">Review the legends.</p>
             </div>
           </button>
 

@@ -3,6 +3,8 @@ import { HistoryList } from '../types';
 export const HISTORY_LISTS: HistoryList[] = [
   {
     id: 'world-history-timeline',
+    year: 'Year 5',
+    term: 'Autumn',
     name: 'World History Timeline',
     description: 'A timeline of major world history events.',
     events: [

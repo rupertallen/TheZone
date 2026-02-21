@@ -11,7 +11,8 @@ export type Screen =
   | 'verbGame' 
   | 'reels'
   | 'poetry'
-  | 'chess';
+  | 'chess'
+  | 'maths';
 
 export type GameType = 'wordMatch' | 'spellingBee' | 'singleLanguageSpelling' | 'historyMatch' | 'verbGame' | 'reels';
 

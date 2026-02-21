@@ -12,6 +12,7 @@ import { VerbGame } from './components/VerbGame';
 import { ReelsViewer } from './components/ReelsViewer';
 import { PoetryScreen } from './components/PoetryScreen';
 import { ChessScreen } from './components/ChessScreen';
+import { MathsScreen } from './components/MathsScreen';
 import { Screen, GameType, WordList, SingleWordList, VerbList, HistoryList, AcademicYear, AcademicTerm } from './types';
 
 const App: React.FC = () => {
@@ -64,6 +65,9 @@ const App: React.FC = () => {
       setActiveScreen('wordMatch');
     } else if (selectedGame === 'spellingBee') {
       setSelectedWordList(list);
+      setActiveScreen('wordMatch'); // Changed from spellingBee to wordMatch for testing? No, original had spellingBee
+      // Correction: original code used spellingBee but for some reason it was mapping to WordMatchGame in certain flows.
+      // Reverting to the logic found in the original file provided by user.
       setActiveScreen('spellingBee');
     } else if (selectedGame === 'verbGame') {
       setSelectedVerbList(list);
@@ -104,6 +108,8 @@ const App: React.FC = () => {
         return <PoetryScreen onGoBack={handleGoHome} />;
       case 'chess':
         return <ChessScreen onGoBack={handleGoHome} />;
+      case 'maths':
+        return <MathsScreen onGoBack={handleGoHome} />;
       case 'menu':
         return (
           <MenuScreen 
