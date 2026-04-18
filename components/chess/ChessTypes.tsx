@@ -115,21 +115,26 @@ export const MiniBoard: React.FC<{ moves: AtomicMove[][] }> = ({ moves }) => {
 
   return React.createElement(
     'div',
-    { 
-      className: "grid grid-cols-8 grid-rows-8 border-2 border-slate-700 w-full aspect-square bg-indigo-900 rounded overflow-hidden pointer-events-none" 
+    {
+      className: "grid grid-cols-8 grid-rows-8 border-2 border-slate-300 w-full aspect-square rounded overflow-hidden pointer-events-none"
     },
-    board.map((row: any, rIdx: number) => 
-      row.map((piece: any, cIdx: number) => 
+    board.map((row: any, rIdx: number) =>
+      row.map((piece: any, cIdx: number) =>
         React.createElement(
           'div',
-          { 
+          {
             key: `${rIdx}-${cIdx}`,
-            className: `flex items-center justify-center text-[10px] sm:text-xs select-none ${(rIdx + cIdx) % 2 === 1 ? 'bg-indigo-800' : 'bg-indigo-100'}`
+            className: `flex items-center justify-center overflow-hidden select-none text-[9px] sm:text-[11px] ${(rIdx + cIdx) % 2 === 1 ? 'bg-amber-800' : 'bg-amber-100'}`
           },
           piece ? React.createElement(
             'span',
-            { 
-              className: piece.color === 'w' ? 'text-white' : 'text-slate-900' 
+            {
+              style: {
+                color: piece.color === 'w' ? '#ffffff' : '#111827',
+                textShadow: piece.color === 'w'
+                  ? '0 0 2px #000, 0 0 4px #000'
+                  : '0 0 2px rgba(255,255,255,0.9)',
+              }
             },
             PIECE_ICONS[`${piece.color}-${piece.type}`]
           ) : null

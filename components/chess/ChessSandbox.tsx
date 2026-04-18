@@ -237,7 +237,7 @@ export const ChessSandbox: React.FC<ChessSandboxProps> = ({ onBack }) => {
 
           {/* Board grid */}
           <div
-            className="grid grid-cols-8 border-2 border-slate-600 shadow-2xl rounded overflow-hidden"
+            className="grid grid-cols-8 grid-rows-8 border-2 border-slate-600 shadow-2xl rounded overflow-hidden"
             style={{ width: 'min(82vw, 480px)', height: 'min(82vw, 480px)' }}
           >
             {Array.from({ length: 8 }, (_, dRow) =>
@@ -254,7 +254,7 @@ export const ChessSandbox: React.FC<ChessSandboxProps> = ({ onBack }) => {
                     key={`${dRow}-${dCol}`}
                     onClick={() => handleSquareClick(bRow, bCol)}
                     className={[
-                      'relative flex items-center justify-center select-none transition-colors duration-100',
+                      'relative flex items-center justify-center select-none transition-colors duration-100 overflow-hidden',
                       isDark ? 'bg-amber-800 hover:bg-amber-700' : 'bg-amber-100 hover:bg-amber-200',
                       isSelected ? 'ring-inset ring-4 ring-yellow-300 z-10' : '',
                     ].join(' ')}

@@ -49,31 +49,31 @@ export const OPENINGS: Opening[] = [
     id: 'french-defense',
     category: 'Classic Open Games',
     name: 'French Defense',
-    moves: '1.e4 e6',
-    notations: ['1. e4', '1... e6'],
+    moves: '1.e4 e6 2.d4 d5',
+    notations: ['1. e4', '1... e6', '2. d4', '2... d5'],
     description: 'A solid, "brick wall" defense where Black challenges the center later with ...d5.',
     history: 'Named after a correspondence match between London and Paris in 1834, where the French team used it effectively.',
-    boardMoves: [[[6, 4, 4, 4]], [[1, 4, 2, 4]]]
+    boardMoves: [[[6, 4, 4, 4]], [[1, 4, 2, 4]], [[6, 3, 4, 3]], [[1, 3, 3, 3]]]
   },
   {
     id: 'caro-kann-defense',
     category: 'Classic Open Games',
     name: 'Caro-Kann Defense',
-    moves: '1.e4 c6',
-    notations: ['1. e4', '1... c6'],
+    moves: '1.e4 c6 2.d4 d5',
+    notations: ['1. e4', '1... c6', '2. d4', '2... d5'],
     description: 'Known as the "Slav\'s cousin," it is an ultra-solid defense favored by players who hate losing.',
     history: 'Named after Horatio Caro and Marcus Kann, who analyzed it in 1886.',
-    boardMoves: [[[6, 4, 4, 4]], [[1, 2, 2, 2]]]
+    boardMoves: [[[6, 4, 4, 4]], [[1, 2, 2, 2]], [[6, 3, 4, 3]], [[1, 3, 3, 3]]]
   },
   {
     id: 'scandinavian-defense',
     category: 'Classic Open Games',
     name: 'Scandinavian Defense',
-    moves: '1.e4 d5',
-    notations: ['1. e4', '1... d5'],
+    moves: '1.e4 d5 2.exd5 Qxd5',
+    notations: ['1. e4', '1... d5', '2. exd5', '2... Qxd5'],
     description: 'A direct strike at the center that forces the game into unique territory immediately.',
     history: 'One of the oldest recorded defenses, first mentioned in "Scachs d\'amor" around 1475.',
-    boardMoves: [[[6, 4, 4, 4]], [[1, 3, 3, 3]]]
+    boardMoves: [[[6, 4, 4, 4]], [[1, 3, 3, 3]], [[4, 4, 3, 3]], [[0, 3, 3, 3]]]
   },
   {
     id: 'kings-gambit',
@@ -91,11 +91,11 @@ export const OPENINGS: Opening[] = [
     id: 'kings-indian-defense',
     category: 'Strategic Closed Games',
     name: 'King’s Indian Defense',
-    moves: '1.d4 Nf6 2.c4 g6',
-    notations: ['1. d4', '1... Nf6', '2. c4', '2... g6'],
+    moves: '1.d4 Nf6 2.c4 g6 3.Nc3 Bg7',
+    notations: ['1. d4', '1... Nf6', '2. c4', '2... g6', '3. Nc3', '3... Bg7'],
     description: 'A "hypermodern" opening where Black lets White take the center only to blow it up later.',
     history: 'A favorite of Garry Kasparov and Bobby Fischer, leading to some of the most exciting games in history.',
-    boardMoves: [[[6, 3, 4, 3]], [[0, 6, 2, 5]], [[6, 2, 4, 2]], [[1, 6, 2, 6]]]
+    boardMoves: [[[6, 3, 4, 3]], [[0, 6, 2, 5]], [[6, 2, 4, 2]], [[1, 6, 2, 6]], [[7, 1, 5, 2]], [[0, 5, 1, 6]]]
   },
   {
     id: 'slav-defense',

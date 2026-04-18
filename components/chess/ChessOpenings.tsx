@@ -89,27 +89,48 @@ export const ChessOpenings: React.FC<ChessOpeningsProps> = ({ onBack }) => {
 
         <main className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-10 items-start pb-12">
           <div className="flex flex-col items-center gap-8 bg-slate-800/40 p-6 sm:p-10 rounded-[40px] border border-white/5 backdrop-blur-sm shadow-2xl">
-            <div className="grid grid-cols-8 grid-rows-8 border-8 border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden w-[300px] h-[300px] sm:w-[450px] sm:h-[450px]">
+            <div
+              className="grid grid-cols-8 grid-rows-8 border-4 border-slate-700 shadow-2xl rounded-lg overflow-hidden"
+              style={{ width: 'min(80vw, 450px)', height: 'min(80vw, 450px)' }}
+            >
               {currentBoard.map((row, rIdx) => row.map((piece, cIdx) => {
                 const isDark = (rIdx + cIdx) % 2 === 1;
                 const highlightTarget = isLastMoveTarget(rIdx, cIdx);
                 const highlightSource = isLastMoveSource(rIdx, cIdx);
+                const bgClass = highlightTarget
+                  ? 'bg-yellow-300'
+                  : highlightSource
+                  ? (isDark ? 'bg-amber-700' : 'bg-amber-200')
+                  : (isDark ? 'bg-amber-800' : 'bg-amber-100');
                 return (
-                  <div key={`${rIdx}-${cIdx}`} className={`relative flex items-center justify-center text-3xl sm:text-5xl select-none ${isDark ? 'bg-indigo-800' : 'bg-indigo-100'} ${highlightTarget ? 'bg-yellow-200/60 ring-inset ring-2 ring-yellow-400' : ''} ${highlightSource ? 'bg-yellow-400/20' : ''}`}>
-                    {piece && <span className={piece.color === 'w' ? 'text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)]' : 'text-slate-900'}>{PIECE_ICONS[`${piece.color}-${piece.type}`]}</span>}
+                  <div
+                    key={`${rIdx}-${cIdx}`}
+                    className={`relative flex items-center justify-center overflow-hidden select-none ${bgClass} ${highlightTarget ? 'ring-inset ring-2 ring-yellow-500' : ''}`}
+                    style={{ fontSize: 'clamp(16px, 5vw, 36px)' }}
+                  >
+                    {piece && (
+                      <span style={{
+                        color: piece.color === 'w' ? '#ffffff' : '#111827',
+                        textShadow: piece.color === 'w'
+                          ? '0 0 3px #000, 0 0 6px #000, 0 0 10px #000'
+                          : '0 0 4px rgba(255,255,255,0.9), 0 0 8px rgba(255,255,255,0.5)',
+                      }}>
+                        {PIECE_ICONS[`${piece.color}-${piece.type}`]}
+                      </span>
+                    )}
                   </div>
                 );
               }))}
             </div>
             <div className="flex items-center gap-6 bg-slate-900/80 p-3 rounded-full border border-white/10 shadow-2xl backdrop-blur-md">
-               <button onClick={() => setOpeningStep(0)} disabled={openingStep === 0} className="p-4 hover:bg-white/10 text-white rounded-full disabled:opacity-20">I</button>
+               <button onClick={() => setOpeningStep(0)} disabled={openingStep === 0} className="p-4 hover:bg-white/10 text-white rounded-full disabled:opacity-20">«</button>
                <button onClick={() => setOpeningStep(s => Math.max(0, s - 1))} disabled={openingStep === 0} className="p-4 bg-indigo-600/20 hover:bg-indigo-600/40 text-indigo-400 rounded-full disabled:opacity-20">&larr;</button>
                <div className="flex flex-col items-center min-w-[100px]">
                 <span className="text-xs font-black text-slate-500 uppercase tracking-widest">Step</span>
                 <div className="font-mono font-black text-2xl text-white">{openingStep} / {activeOpening.boardMoves.length}</div>
               </div>
               <button onClick={() => setOpeningStep(s => Math.min(activeOpening.boardMoves.length, s + 1))} disabled={openingStep === activeOpening.boardMoves.length} className="p-4 bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-full disabled:opacity-20">&rarr;</button>
-              <button onClick={() => setOpeningStep(activeOpening.boardMoves.length)} disabled={openingStep === activeOpening.boardMoves.length} className="p-4 hover:bg-white/10 text-white rounded-full disabled:opacity-20">XI</button>
+              <button onClick={() => setOpeningStep(activeOpening.boardMoves.length)} disabled={openingStep === activeOpening.boardMoves.length} className="p-4 hover:bg-white/10 text-white rounded-full disabled:opacity-20">»</button>
             </div>
           </div>
 
