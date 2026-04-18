@@ -3,7 +3,7 @@ import React, { useState, useEffect, useCallback } from 'react';
 import { GameBoard } from './GameBoard';
 import { ScoreScreen } from './ScoreScreen';
 import { ProgressBar } from './ProgressBar';
-import { GameStatus, WordPair } from '../types';
+import { AnyList, GameStatus, WordPair } from '../types';
 
 const QUESTIONS_PER_PAGE = 5;
 
@@ -18,7 +18,7 @@ const shuffleArray = <T,>(array: T[]): T[] => {
 };
 
 interface WordMatchGameProps {
-  list: any; // Accept any supported list type
+  list: AnyList;
   onGoHome: () => void;
   onGoBack: () => void;
 }
@@ -30,27 +30,19 @@ export const WordMatchGame: React.FC<WordMatchGameProps> = ({ list, onGoHome, on
   const [score, setScore] = useState<number>(0);
   
   const processList = useCallback((): WordPair[] => {
-    if (list.words) {
+    if ('words' in list) {
       return list.words;
-    } else if (list.definitions) {
-      return list.definitions.map((d: any) => ({
+    } else if ('definitions' in list) {
+      return list.definitions.map(d => ({
         id: d.id,
         lang1: d.term,
         lang2: d.meaning,
       }));
-    } else if (list.cases) {
+    } else if ('cases' in list) {
       const pairs: WordPair[] = [];
-      list.cases.forEach((c: any) => {
-        pairs.push({
-          id: c.id * 10,
-          lang1: `${c.caseName} Singular`,
-          lang2: c.latinSingular,
-        });
-        pairs.push({
-          id: c.id * 10 + 1,
-          lang1: `${c.caseName} Plural`,
-          lang2: c.latinPlural,
-        });
+      list.cases.forEach(c => {
+        pairs.push({ id: c.id * 10, lang1: `${c.caseName} Singular`, lang2: c.latinSingular });
+        pairs.push({ id: c.id * 10 + 1, lang1: `${c.caseName} Plural`, lang2: c.latinPlural });
       });
       return pairs;
     }

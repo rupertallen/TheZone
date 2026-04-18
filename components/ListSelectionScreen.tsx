@@ -5,10 +5,10 @@ import { DEFINITION_LISTS } from '../data/definitions';
 import { CASE_LISTS } from '../data/cases';
 import { VERB_LISTS } from '../data/verbs';
 import { HISTORY_LISTS } from '../data/history-events';
-import { AcademicYear, AcademicTerm, GameType } from '../types';
+import { AcademicYear, AcademicTerm, AnyList, GameType } from '../types';
 
 interface ListSelectionScreenProps {
-  onSelectList: (list: any) => void;
+  onSelectList: (list: AnyList) => void;
   onGoBack: () => void;
   year: AcademicYear;
   term: AcademicTerm;
@@ -16,7 +16,7 @@ interface ListSelectionScreenProps {
 }
 
 export const ListSelectionScreen: React.FC<ListSelectionScreenProps> = ({ onSelectList, onGoBack, year, term, gameType }) => {
-  let filteredLists: any[] = [];
+  let filteredLists: AnyList[] = [];
   let iconColor = 'sky';
   let title = 'Choose a List';
 
@@ -54,7 +54,7 @@ export const ListSelectionScreen: React.FC<ListSelectionScreenProps> = ({ onSele
     }
   };
 
-  const bgColors: any = {
+  const bgColors: Record<string, string> = {
     sky: 'bg-sky-100 text-sky-600',
     emerald: 'bg-emerald-100 text-emerald-600',
     amber: 'bg-amber-100 text-amber-600',
@@ -62,7 +62,7 @@ export const ListSelectionScreen: React.FC<ListSelectionScreenProps> = ({ onSele
     rose: 'bg-rose-100 text-rose-600'
   };
 
-  const focusColors: any = {
+  const focusColors: Record<string, string> = {
     sky: 'focus:ring-sky-300',
     emerald: 'focus:ring-emerald-300',
     amber: 'focus:ring-amber-300',

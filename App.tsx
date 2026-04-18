@@ -65,9 +65,6 @@ const App: React.FC = () => {
       setActiveScreen('wordMatch');
     } else if (selectedGame === 'spellingBee') {
       setSelectedWordList(list);
-      setActiveScreen('wordMatch'); // Changed from spellingBee to wordMatch for testing? No, original had spellingBee
-      // Correction: original code used spellingBee but for some reason it was mapping to WordMatchGame in certain flows.
-      // Reverting to the logic found in the original file provided by user.
       setActiveScreen('spellingBee');
     } else if (selectedGame === 'verbGame') {
       setSelectedVerbList(list);
