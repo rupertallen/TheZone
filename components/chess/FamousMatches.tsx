@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { FamousMatch, INITIAL_BOARD, PIECE_ICONS, AtomicMove } from './ChessTypes';
+import { FamousMatch, INITIAL_BOARD, PIECE_ICONS } from './ChessTypes';
 import { FAMOUS_MATCHES } from '../../data/famousMatches';
 
 interface FamousMatchesProps {
@@ -93,27 +93,48 @@ export const FamousMatches: React.FC<FamousMatchesProps> = ({ onBack }) => {
 
         <main className="w-full max-w-6xl grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12 items-start pb-12">
           <div className="flex flex-col items-center gap-6 bg-slate-800/40 p-4 sm:p-10 rounded-[40px] border border-white/5 backdrop-blur-sm shadow-2xl">
-            <div className="grid grid-cols-8 grid-rows-8 border-[6px] sm:border-[12px] border-slate-700 shadow-[0_0_50px_rgba(0,0,0,0.5)] rounded-lg overflow-hidden w-[280px] h-[280px] sm:w-[450px] sm:h-[450px]">
+            <div
+              className="grid grid-cols-8 grid-rows-8 border-4 border-slate-700 shadow-2xl rounded-lg overflow-hidden"
+              style={{ width: 'min(80vw, 450px)', height: 'min(80vw, 450px)' }}
+            >
               {currentBoard.map((row: any, rIdx: number) => row.map((piece: any, cIdx: number) => {
                 const isDark = (rIdx + cIdx) % 2 === 1;
                 const highlightTarget = isTargetSquare(rIdx, cIdx);
                 const highlightSource = isSourceSquare(rIdx, cIdx);
+                const bgClass = highlightTarget
+                  ? 'bg-yellow-300'
+                  : highlightSource
+                  ? (isDark ? 'bg-amber-700' : 'bg-amber-200')
+                  : (isDark ? 'bg-amber-800' : 'bg-amber-100');
                 return (
-                  <div key={`${rIdx}-${cIdx}`} className={`relative flex items-center justify-center text-3xl sm:text-5xl select-none ${isDark ? 'bg-indigo-800' : 'bg-indigo-100'} ${highlightTarget ? 'bg-yellow-200/60 ring-inset ring-2 ring-yellow-400' : ''} ${highlightSource ? 'bg-yellow-400/20' : ''}`}>
-                    {piece && <span className={piece.color === 'w' ? 'text-white drop-shadow-[0_4px_4px_rgba(0,0,0,0.4)]' : 'text-slate-900'}>{PIECE_ICONS[`${piece.color}-${piece.type}`]}</span>}
+                  <div
+                    key={`${rIdx}-${cIdx}`}
+                    className={`relative flex items-center justify-center overflow-hidden select-none ${bgClass} ${highlightTarget ? 'ring-inset ring-2 ring-yellow-500' : ''}`}
+                    style={{ fontSize: 'clamp(16px, 5vw, 36px)' }}
+                  >
+                    {piece && (
+                      <span style={{
+                        color: piece.color === 'w' ? '#ffffff' : '#111827',
+                        textShadow: piece.color === 'w'
+                          ? '0 0 3px #000, 0 0 6px #000, 0 0 10px #000'
+                          : '0 0 4px rgba(255,255,255,0.9), 0 0 8px rgba(255,255,255,0.5)',
+                      }}>
+                        {PIECE_ICONS[`${piece.color}-${piece.type}`]}
+                      </span>
+                    )}
                   </div>
                 );
               }))}
             </div>
             <div className="flex items-center gap-4 sm:gap-6 bg-slate-900/80 p-2 sm:p-3 rounded-full border border-white/10 shadow-2xl backdrop-blur-md">
-               <button onClick={() => setMoveIndex(0)} disabled={moveIndex === 0} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-white/10 text-white rounded-full disabled:opacity-20 transition-colors font-mono font-black">I</button>
+               <button onClick={() => setMoveIndex(0)} disabled={moveIndex === 0} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-white/10 text-white rounded-full disabled:opacity-20 transition-colors font-mono font-black">«</button>
                <button onClick={() => setMoveIndex(idx => Math.max(0, idx - 1))} disabled={moveIndex === 0} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-sky-600/20 hover:bg-sky-600/40 text-sky-400 rounded-full disabled:opacity-20 transition-colors">&larr;</button>
                <div className="flex flex-col items-center min-w-[80px] sm:min-w-[100px]">
                 <span className="text-[10px] font-black text-slate-500 uppercase tracking-widest">Move</span>
                 <div className="font-mono font-black text-xl sm:text-2xl text-white">{moveIndex} / {activeMatch.moves.length}</div>
               </div>
               <button onClick={() => setMoveIndex(idx => Math.min(activeMatch.moves.length, idx + 1))} disabled={moveIndex === activeMatch.moves.length} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center bg-emerald-600/20 hover:bg-emerald-600/40 text-emerald-400 rounded-full disabled:opacity-20 transition-colors">&rarr;</button>
-              <button onClick={() => setMoveIndex(activeMatch.moves.length)} disabled={moveIndex === activeMatch.moves.length} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-white/10 text-white rounded-full disabled:opacity-20 transition-colors font-mono font-black">XI</button>
+              <button onClick={() => setMoveIndex(activeMatch.moves.length)} disabled={moveIndex === activeMatch.moves.length} className="w-10 h-10 sm:w-12 sm:h-12 flex items-center justify-center hover:bg-white/10 text-white rounded-full disabled:opacity-20 transition-colors font-mono font-black">»</button>
             </div>
           </div>
 
